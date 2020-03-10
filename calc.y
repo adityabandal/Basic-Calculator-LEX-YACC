@@ -97,6 +97,7 @@ exp    	: term
        	| exp '*' exp          {$$ = $1 * $3;printf("yacc3 %f\n",$$);}//top_if = $$;top_else = !top_if;}
        	| exp '/' exp          {$$ = $1 / $3;printf("yacc4 %f\n",$$);}//top_if = $$;top_else = !top_if;}
 		| exp '+' exp          {$$ = $1 + $3;printf("yacc1 %f\n",$$);}//top_if = $$;top_else = !top_if;}
+		| '(' exp ')'          {$$ = $2;printf("yacc44 %f\n",$$);}//top_if = $$;top_else = !top_if;}
 		;
 
 bool 	: term					{$$ = $1;printf("yacc00 %f\n",$$);top_if = $1;top_else = !top_if;printf("Bool %d..%d\n",top_if,top_else);}
