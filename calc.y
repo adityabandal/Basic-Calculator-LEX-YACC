@@ -46,8 +46,8 @@ line    : assignment ';'		{;}
 		| line exit_command ';'	{exit(EXIT_SUCCESS);}
 		| IF exp line ';' {printf("if +++++++ ");if($2){$$=$3;printf("if passed");}else{printf("if failed");} }
 		| line IF exp line ';' {printf("if ++++++- "); if($3){$$=$4;printf("if passed");}else{printf("if failed");}}
-		| IF exp line ';' ELSE line ';' {printf("if_e_i ++++++- "); if($2){$$=$3;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
-		| line IF exp line ';' ELSE line ';' {printf("if_e_i ++++++- "); if($3){$$=$4;printf("if_e_i passed");}else{$$=$7;printf("if_e_e passed");}}
+		// | IF exp line ELSE line ';' {printf("if_e_i ++++++- "); if($2){$$=$3;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
+		// | line IF exp line ELSE line ';' {printf("if_e_i ++++++- "); if($3){$$=$4;printf("if_e_i passed");}else{$$=$7;printf("if_e_e passed");}}
 		| exp ';'				{printf("Arithmetic ++++++++++++++++++%f\n",$1);}
 		| line exp ';'			{printf("Arithmetic +++++++++++++++++-%f\n",$2);}
 		| number ';'			{printf("))%f\n",$1);}
@@ -90,18 +90,17 @@ line    : assignment ';'		{;}
 //         | ';'					{return 0;}
 // 		;
 
-assignment : identifier '=' exp  {if((top_if == 1 && top_else == 0) || (top_if == 0 &&top_else == 1)){updateSymbolVal($1,$3);}}
+assignment : identifier '=' exp  {if((top_if == 1 && top_else == 0)){updateSymbolVal($1,$3);}}
 			;
 exp    	: term                 {$$ = $1;}
        	| exp '-' exp          {$$ = $1 - $3;printf("yacc2 %f\n",$$);top_if = $$;top_else = !top_if;}
        	| exp '*' exp          {$$ = $1 * $3;printf("yacc3 %f\n",$$);top_if = $$;top_else = !top_if;}
        	| exp '/' exp          {$$ = $1 / $3;printf("yacc4 %f\n",$$);top_if = $$;top_else = !top_if;}
 		| exp '+' exp          {$$ = $1 + $3;printf("yacc1 %f\n",$$);top_if = $$;top_else = !top_if;}
-		// | '(' exp ')'         {$$ = $2;printf("yacc44 %f\n",$$);top_if = $$;top_else = !top_if;}
-		| exp '&''&' exp       {$$ = $1 && $4;printf("Bool %d\n",$$);top_if = $$;top_else = !top_if;}
-		| exp '|''|' exp      {$$ = $1 || $4;printf("Bool %d\n",$$);top_if = $$;top_else = !top_if;}
+		| exp '&''&' exp       {$$ = $1 && $4;top_if = $$;top_else = !top_if;printf("Bool %d\n",top_if);}
+		| exp '|''|' exp      {$$ = $1 || $4;top_if = $$;top_else = !top_if;printf("Bool %d\n",top_if);}
 		| '!' exp          	   {$$ = !$2;printf("yacc7 %f\n",$$);top_if = $$;top_else = !top_if;}
-		// | '(' bool ')'         {$$ = $2;printf("yacc55 %f\n",$$);top_if = $$;top_else = !top_if;}
+		| '(' exp ')'         {$$ = $2;printf("yacc44 %f\n",$$);top_if = $$;top_else = !top_if;}
        	;
 
 // bool 	: term					{$$ = $1;}

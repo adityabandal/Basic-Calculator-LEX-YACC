@@ -19,7 +19,7 @@ int yylex();
 "{"                     {printf("lex3 %s\n",yytext);return yytext[0];}
 "}"                     {printf("lex4 %s\n",yytext);return yytext[0];}
 
-\/\*([^*]|\*+[^*/])*\*+\/          {printf("Commented");}
+\/\*.*([\n])([^*]|\*+[^*/])*\*+\/          {printf("Commented");}
 
 
 .                      {ECHO; yyerror ("unexpected character");}
