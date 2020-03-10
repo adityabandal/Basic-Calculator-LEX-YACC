@@ -271,7 +271,7 @@ typedef int yytype_uint16;
 #define YYSIZEOF(X) YY_CAST (YYPTRDIFF_T, sizeof (X))
 
 /* Stored state numbers (used for stacks). */
-typedef yytype_int8 yy_state_t;
+typedef yytype_uint8 yy_state_t;
 
 /* State numbers in computations.  */
 typedef int yy_state_fast_t;
@@ -476,16 +476,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  25
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   229
+#define YYLAST   456
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  23
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  6
+#define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  31
+#define YYNRULES  64
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  73
+#define YYNSTATES  160
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   263
@@ -534,9 +534,12 @@ static const yytype_int8 yytranslate[] =
 static const yytype_int8 yyrline[] =
 {
        0,    39,    39,    40,    41,    42,    43,    44,    45,    46,
-      47,    48,    49,    50,    51,    52,    53,    54,    93,    95,
-      96,    97,    98,    99,   100,   103,   104,   105,   106,   107,
-     110,   111
+      47,    48,    49,    50,    51,    52,    53,    54,    57,    58,
+      59,    60,    61,    62,    63,    64,    65,    66,    67,    68,
+      69,    70,    71,    72,    75,    76,    77,    78,    79,    80,
+      81,    82,    83,    84,    85,    86,    87,    88,    89,    90,
+      93,    96,    99,   100,   101,   102,   103,   104,   107,   108,
+     109,   110,   111,   114,   115
 };
 #endif
 
@@ -548,7 +551,7 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "print", "IF", "ELSE", "exit_command",
   "number", "identifier", "'+'", "'-'", "'*'", "'/'", "'%'", "'('", "')'",
   "';'", "'{'", "'}'", "'='", "'&'", "'|'", "'!'", "$accept", "line",
-  "assignment", "exp", "bool", "term", YY_NULLPTR
+  "line_i", "line_e", "assignment", "assignment_e", "exp", "bool", "term", YY_NULLPTR
 };
 #endif
 
@@ -563,12 +566,12 @@ static const yytype_int16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF (-15)
+#define YYPACT_NINF (-95)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-1)
+#define YYTABLE_NINF (-50)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -577,14 +580,22 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-     150,    73,     2,    -5,    -3,    -4,    73,   -15,   150,    44,
-       4,   189,   -15,   -15,   -15,   197,     2,     2,    69,   -15,
-     -15,   -15,    73,    89,    88,   -15,    73,     2,     6,   150,
-      12,   205,   -15,    73,    73,    73,    73,   -15,   -15,   -14,
-      18,    -2,    20,   120,   105,   -15,   -15,   213,    69,   -15,
-     104,   -15,   -15,    19,    19,   -15,   -15,   -15,     2,     2,
-     150,   -15,   -15,   135,   -15,    18,    18,   165,   150,   -15,
-     -15,   180,   -15
+     301,   159,     4,   -15,   -10,    -3,   159,   -95,   301,   154,
+      -7,   352,   -95,   -95,   -95,   360,     4,     4,   183,   -95,
+     -95,   -95,   159,   205,   204,   -95,   159,     4,     5,   301,
+      12,   368,   -95,   159,   159,   159,   159,   -95,   -95,    87,
+     -17,   159,     4,    15,    28,     8,   301,    27,    49,   331,
+      17,    50,   376,   184,   -95,   -95,   384,   183,   -95,   221,
+     -95,   -95,    45,    45,   -95,   -95,   -95,   392,   183,    25,
+      33,   237,     4,     4,   159,     4,    62,   301,    67,   400,
+     316,   -95,    35,    43,   -95,    47,   -95,    57,    60,    66,
+     -17,   -17,   408,   183,    69,   253,    74,    79,   159,     4,
+      72,    77,    97,    84,   301,   343,   116,   128,   416,   316,
+     -95,   316,    81,    82,    98,   119,   424,   183,   130,   131,
+     159,   269,   159,     4,   134,   301,   135,   432,   -95,   -95,
+     143,   149,   153,   316,   123,   156,   124,   184,   161,   440,
+     183,   163,   285,   164,   165,   -95,   126,   168,   316,   172,
+     176,   148,   182,   158,   185,   316,   189,   190,   197,   203
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -592,83 +603,137 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,    30,    31,     0,    17,     0,     0,
-       0,     0,    19,    30,    31,     0,     0,     0,     0,    25,
+       0,     0,     0,     0,    63,    64,     0,    17,     0,     0,
+       0,     0,    52,    63,    64,     0,     0,     0,     0,    58,
        5,    16,     0,     0,     0,     1,     0,     0,     0,     0,
        0,     0,     2,     0,     0,     0,     0,    14,     6,     0,
-      28,     0,     0,     0,    18,    24,     3,     0,     0,     9,
-       0,     7,    15,    23,    20,    21,    22,    29,     0,     0,
-       0,    10,     8,     0,     4,    26,    27,     0,     0,    11,
-      12,     0,    13
+      61,     0,     0,     0,    63,    17,     0,     0,     0,     0,
+       0,     0,     0,    50,    57,     3,     0,     0,     9,     0,
+       7,    15,    56,    53,    54,    55,    62,     0,     0,     5,
+      16,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,    10,     2,    14,     8,     0,     4,     6,     0,     3,
+      59,    60,     0,     0,     9,     0,     7,    15,     0,     0,
+       0,    63,    64,    17,     0,     0,     0,     0,     0,     0,
+      11,     0,    10,     8,     0,     4,     0,     0,     5,    16,
+       0,     0,     0,     0,     0,     0,     0,     0,    12,    34,
+      14,     0,     0,     0,    11,     6,     0,    50,     3,     0,
+       0,     9,     0,     7,    15,    13,    12,     0,     0,    10,
+       8,     0,     4,    13,     0,     0,    11,    12,     0,    13
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -15,    11,    -7,    -1,   -13,    10
+     -95,     0,   -25,   -94,    -4,   -95,     1,   110,   103
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     9,    10,    11,    18,    12
+      -1,    49,    50,   106,    10,   107,    11,    18,    12
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule whose
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_int16 yytable[] =
 {
-      15,    57,    30,    39,    40,    23,    41,    42,    31,    13,
-      14,    20,    19,    21,    48,    22,    16,    30,    58,    24,
-      32,    44,    49,    31,    17,    47,    19,    19,    51,    43,
-      35,    36,    53,    54,    55,    56,    30,    19,    41,    42,
-      50,    59,    31,    30,    25,    65,    66,    26,    27,    31,
-      28,    13,     5,     0,     0,     0,    30,     0,     6,    63,
-      30,    29,    31,     0,    30,     0,    31,     0,    19,    19,
-      31,    67,     1,     2,     0,     3,     4,     5,     0,    71,
-      13,    14,     0,     6,     0,     7,     8,     6,     0,    41,
-      42,    26,    27,     0,    28,    13,     5,     0,    33,    34,
-      35,    36,     6,     0,    45,    29,    46,    26,    27,     0,
-      28,    13,     5,     0,    33,    34,    35,    36,     6,     0,
-       0,    29,    64,    26,    27,    60,    28,    13,     5,     0,
-       0,     0,     0,     0,     6,     0,    61,    29,    26,    27,
-      68,    28,    13,     5,     0,     0,     0,     0,     0,     6,
-       0,    69,    29,     1,     2,     0,     3,     4,     5,     0,
-       0,     0,     0,     0,     6,     0,     7,     8,    26,    27,
+       9,    20,    15,    47,    48,    30,    21,    23,    24,    32,
+      31,    13,    14,   -33,    51,   131,    22,   132,    16,    52,
+      30,    58,    80,    53,   -33,    31,    17,    56,    60,    59,
+     -21,    69,    85,    81,    62,    63,    64,    65,   -32,   147,
+     -18,   -21,    67,    88,    70,    78,    71,    72,   -30,   -32,
+      79,   -18,   109,    51,   154,    30,    35,    36,    52,   -30,
+      31,   158,   -22,   110,    51,   111,    82,    30,   114,    52,
+      73,   -19,    31,   -22,   -25,    92,   112,    95,    94,   -23,
+     105,   108,   -19,    96,   -31,   -25,   -26,   -24,   118,    51,
+     -23,    30,   136,   119,    52,   -31,    31,   -26,   -24,   116,
+     -49,   126,    66,   133,   121,    19,   127,    47,    48,   105,
+     108,   105,   108,    51,   134,   151,   120,    30,    52,    19,
+      19,   137,    31,   139,   -20,   142,    39,    40,   -27,   148,
+      19,   -28,   128,   105,   108,   -20,    51,    57,    30,   -27,
+     149,    52,   -28,    31,   129,    19,   -37,   -48,   105,   108,
+     141,   143,    68,   155,    25,   105,   108,    26,    27,   -46,
+      28,    13,     5,   -29,   156,   145,    13,    14,     6,   146,
+       0,    29,   -38,     6,   -29,    19,    19,   -35,    19,   -41,
+     -39,   -47,    90,    91,   153,    93,    41,    42,   -42,    43,
+      44,     5,   -40,    33,    34,    35,    36,     6,   -36,    45,
+      46,   157,    19,    47,    48,   -43,   -44,    26,    27,   117,
+      28,    13,     5,   159,    33,    34,    35,    36,     6,   -45,
+      54,    29,    55,     0,    26,    27,    19,    28,    13,     5,
+       0,     0,     0,   140,     0,     6,     0,     0,    29,    86,
+      26,    27,     0,    28,    13,     5,     0,     0,     0,     0,
+       0,     6,     0,     0,    29,    89,    26,    27,     0,    28,
+      13,     5,     0,     0,     0,     0,     0,     6,     0,     0,
+      29,   115,    26,    27,     0,    28,    13,     5,     0,     0,
+       0,     0,     0,     6,     0,     0,    29,   138,    26,    27,
        0,    28,    13,     5,     0,     0,     0,     0,     0,     6,
-       0,    70,    29,    26,    27,     0,    28,    13,     5,     0,
-       0,     0,     0,     0,     6,     0,    72,    29,    33,    34,
-      35,    36,     0,     0,     0,    37,    33,    34,    35,    36,
-       0,     0,     0,    38,    33,    34,    35,    36,     0,     0,
-       0,    52,    33,    34,    35,    36,     0,     0,     0,    62
+       0,     0,    29,   152,     1,     2,     0,     3,     4,     5,
+       0,     0,     0,     0,     0,     6,     0,     7,     8,    98,
+      99,     0,   100,   101,   102,     0,     0,     0,     0,     0,
+       6,     0,   103,   104,    74,    75,     0,    76,    13,     5,
+       0,     0,     0,     0,     0,     6,   122,   123,    77,   124,
+      13,     5,     0,     0,     0,     0,     0,     6,     0,     0,
+     125,    33,    34,    35,    36,     0,     0,     0,    37,    33,
+      34,    35,    36,     0,     0,     0,    38,    33,    34,    35,
+      36,     0,     0,     0,    61,    33,    34,    35,    36,     0,
+       0,     0,    83,    33,    34,    35,    36,     0,     0,     0,
+      84,    33,    34,    35,    36,     0,     0,     0,    87,    33,
+      34,    35,    36,     0,     0,     0,    97,    33,    34,    35,
+      36,     0,     0,     0,   113,    33,    34,    35,    36,     0,
+       0,     0,   130,    33,    34,    35,    36,     0,     0,     0,
+     135,    33,    34,    35,    36,     0,     0,     0,   144,    33,
+      34,    35,    36,     0,     0,     0,   150
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-       1,    15,     9,    16,    17,     6,    20,    21,     9,     7,
-       8,    16,     2,    16,    27,    19,    14,    24,    20,     8,
-      16,    22,    16,    24,    22,    26,    16,    17,    16,    18,
-      11,    12,    33,    34,    35,    36,    43,    27,    20,    21,
-      29,    21,    43,    50,     0,    58,    59,     3,     4,    50,
-       6,     7,     8,    -1,    -1,    -1,    63,    -1,    14,    48,
-      67,    17,    63,    -1,    71,    -1,    67,    -1,    58,    59,
-      71,    60,     3,     4,    -1,     6,     7,     8,    -1,    68,
-       7,     8,    -1,    14,    -1,    16,    17,    14,    -1,    20,
-      21,     3,     4,    -1,     6,     7,     8,    -1,     9,    10,
-      11,    12,    14,    -1,    15,    17,    18,     3,     4,    -1,
-       6,     7,     8,    -1,     9,    10,    11,    12,    14,    -1,
-      -1,    17,    18,     3,     4,     5,     6,     7,     8,    -1,
-      -1,    -1,    -1,    -1,    14,    -1,    16,    17,     3,     4,
-       5,     6,     7,     8,    -1,    -1,    -1,    -1,    -1,    14,
-      -1,    16,    17,     3,     4,    -1,     6,     7,     8,    -1,
-      -1,    -1,    -1,    -1,    14,    -1,    16,    17,     3,     4,
+       0,    16,     1,    20,    21,     9,    16,     6,     8,    16,
+       9,     7,     8,     5,    18,   109,    19,   111,    14,    18,
+      24,    16,     5,    22,    16,    24,    22,    26,    16,    29,
+       5,    16,    57,    16,    33,    34,    35,    36,     5,   133,
+       5,    16,    41,    68,    16,    49,    46,    20,     5,    16,
+      49,    16,     5,    57,   148,    59,    11,    12,    57,    16,
+      59,   155,     5,    16,    68,     5,    16,    71,    93,    68,
+      21,     5,    71,    16,     5,    74,    16,    77,    16,     5,
+      80,    80,    16,    16,     5,    16,     5,     5,    16,    93,
+      16,    95,   117,    16,    93,    16,    95,    16,    16,    98,
+      16,   105,    15,     5,   104,     2,   105,    20,    21,   109,
+     109,   111,   111,   117,    16,   140,    19,   121,   117,    16,
+      17,   120,   121,   122,     5,   125,    16,    17,     5,     5,
+      27,     5,    16,   133,   133,    16,   140,    27,   142,    16,
+      16,   140,    16,   142,    16,    42,    16,    16,   148,   148,
+      16,    16,    42,     5,     0,   155,   155,     3,     4,    16,
+       6,     7,     8,     5,    16,    16,     7,     8,    14,    16,
+      -1,    17,    16,    14,    16,    72,    73,    16,    75,    16,
+      16,    16,    72,    73,    16,    75,     3,     4,    16,     6,
+       7,     8,    16,     9,    10,    11,    12,    14,    16,    16,
+      17,    16,    99,    20,    21,    16,    16,     3,     4,    99,
+       6,     7,     8,    16,     9,    10,    11,    12,    14,    16,
+      15,    17,    18,    -1,     3,     4,   123,     6,     7,     8,
+      -1,    -1,    -1,   123,    -1,    14,    -1,    -1,    17,    18,
+       3,     4,    -1,     6,     7,     8,    -1,    -1,    -1,    -1,
+      -1,    14,    -1,    -1,    17,    18,     3,     4,    -1,     6,
+       7,     8,    -1,    -1,    -1,    -1,    -1,    14,    -1,    -1,
+      17,    18,     3,     4,    -1,     6,     7,     8,    -1,    -1,
+      -1,    -1,    -1,    14,    -1,    -1,    17,    18,     3,     4,
       -1,     6,     7,     8,    -1,    -1,    -1,    -1,    -1,    14,
-      -1,    16,    17,     3,     4,    -1,     6,     7,     8,    -1,
-      -1,    -1,    -1,    -1,    14,    -1,    16,    17,     9,    10,
-      11,    12,    -1,    -1,    -1,    16,     9,    10,    11,    12,
-      -1,    -1,    -1,    16,     9,    10,    11,    12,    -1,    -1,
-      -1,    16,     9,    10,    11,    12,    -1,    -1,    -1,    16
+      -1,    -1,    17,    18,     3,     4,    -1,     6,     7,     8,
+      -1,    -1,    -1,    -1,    -1,    14,    -1,    16,    17,     3,
+       4,    -1,     6,     7,     8,    -1,    -1,    -1,    -1,    -1,
+      14,    -1,    16,    17,     3,     4,    -1,     6,     7,     8,
+      -1,    -1,    -1,    -1,    -1,    14,     3,     4,    17,     6,
+       7,     8,    -1,    -1,    -1,    -1,    -1,    14,    -1,    -1,
+      17,     9,    10,    11,    12,    -1,    -1,    -1,    16,     9,
+      10,    11,    12,    -1,    -1,    -1,    16,     9,    10,    11,
+      12,    -1,    -1,    -1,    16,     9,    10,    11,    12,    -1,
+      -1,    -1,    16,     9,    10,    11,    12,    -1,    -1,    -1,
+      16,     9,    10,    11,    12,    -1,    -1,    -1,    16,     9,
+      10,    11,    12,    -1,    -1,    -1,    16,     9,    10,    11,
+      12,    -1,    -1,    -1,    16,     9,    10,    11,    12,    -1,
+      -1,    -1,    16,     9,    10,    11,    12,    -1,    -1,    -1,
+      16,     9,    10,    11,    12,    -1,    -1,    -1,    16,     9,
+      10,    11,    12,    -1,    -1,    -1,    16
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -676,31 +741,45 @@ static const yytype_int8 yycheck[] =
 static const yytype_int8 yystos[] =
 {
        0,     3,     4,     6,     7,     8,    14,    16,    17,    24,
-      25,    26,    28,     7,     8,    26,    14,    22,    27,    28,
-      16,    16,    19,    26,    24,     0,     3,     4,     6,    17,
-      25,    26,    16,     9,    10,    11,    12,    16,    16,    27,
-      27,    20,    21,    24,    26,    15,    18,    26,    27,    16,
-      24,    16,    16,    26,    26,    26,    26,    15,    20,    21,
-       5,    16,    16,    24,    18,    27,    27,    24,     5,    16,
-      16,    24,    16
+      27,    29,    31,     7,     8,    29,    14,    22,    30,    31,
+      16,    16,    19,    29,    24,     0,     3,     4,     6,    17,
+      27,    29,    16,     9,    10,    11,    12,    16,    16,    30,
+      30,     3,     4,     6,     7,    16,    17,    20,    21,    24,
+      25,    27,    29,    29,    15,    18,    29,    30,    16,    24,
+      16,    16,    29,    29,    29,    29,    15,    29,    30,    16,
+      16,    24,    20,    21,     3,     4,     6,    17,    27,    29,
+       5,    16,    16,    16,    16,    25,    18,    16,    25,    18,
+      30,    30,    29,    30,    16,    24,    16,    16,     3,     4,
+       6,     7,     8,    16,    17,    24,    26,    28,    29,     5,
+      16,     5,    16,    16,    25,    18,    29,    30,    16,    16,
+      19,    24,     3,     4,     6,    17,    27,    29,    16,    16,
+      16,    26,    26,     5,    16,    16,    25,    29,    18,    29,
+      30,    16,    24,    16,    16,    16,    16,    26,     5,    16,
+      16,    25,    18,    16,    26,     5,    16,    16,    26,    16
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
        0,    23,    24,    24,    24,    24,    24,    24,    24,    24,
-      24,    24,    24,    24,    24,    24,    24,    24,    25,    26,
-      26,    26,    26,    26,    26,    27,    27,    27,    27,    27,
-      28,    28
+      24,    24,    24,    24,    24,    24,    24,    24,    25,    25,
+      25,    25,    25,    25,    25,    25,    25,    25,    25,    25,
+      25,    25,    25,    25,    26,    26,    26,    26,    26,    26,
+      26,    26,    26,    26,    26,    26,    26,    26,    26,    26,
+      27,    28,    29,    29,    29,    29,    29,    29,    30,    30,
+      30,    30,    30,    31,    31
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     2,     3,     4,     2,     3,     3,     4,     3,
-       4,     5,     6,     7,     2,     3,     2,     1,     3,     1,
-       3,     3,     3,     3,     3,     1,     4,     4,     2,     3,
-       1,     1
+       4,     5,     6,     7,     2,     3,     2,     1,     2,     3,
+       4,     2,     3,     3,     4,     3,     4,     5,     6,     7,
+       2,     3,     2,     1,     2,     3,     4,     2,     3,     3,
+       4,     3,     4,     5,     6,     7,     2,     3,     2,     1,
+       3,     3,     1,     3,     3,     3,     3,     3,     1,     4,
+       4,     2,     3,     1,     1
 };
 
 
@@ -1398,179 +1477,377 @@ yyreduce:
   case 2:
 #line 39 "calc.y"
                                         {;}
-#line 1402 "y.tab.c"
+#line 1481 "y.tab.c"
     break;
 
   case 3:
 #line 40 "calc.y"
                                         {printf("curly");}
-#line 1408 "y.tab.c"
+#line 1487 "y.tab.c"
     break;
 
   case 4:
 #line 41 "calc.y"
                                                 {printf("curly -");}
-#line 1414 "y.tab.c"
+#line 1493 "y.tab.c"
     break;
 
   case 5:
 #line 42 "calc.y"
                                                 {exit(EXIT_SUCCESS);}
-#line 1420 "y.tab.c"
+#line 1499 "y.tab.c"
     break;
 
   case 6:
 #line 43 "calc.y"
                                                 {printf("Printing %f\n", (yyvsp[-1].num));}
-#line 1426 "y.tab.c"
+#line 1505 "y.tab.c"
     break;
 
   case 7:
 #line 44 "calc.y"
                                         {printf("checked\n");}
-#line 1432 "y.tab.c"
+#line 1511 "y.tab.c"
     break;
 
   case 8:
 #line 45 "calc.y"
                                         {printf("Printing %f\n", (yyvsp[-1].num));}
-#line 1438 "y.tab.c"
+#line 1517 "y.tab.c"
     break;
 
   case 9:
 #line 46 "calc.y"
                                         {exit(EXIT_SUCCESS);}
-#line 1444 "y.tab.c"
+#line 1523 "y.tab.c"
     break;
 
   case 10:
 #line 47 "calc.y"
-                                   {printf("if +++++++ ");if((yyvsp[-2].num)){(yyval.num)=(yyvsp[-1].num);printf("if passed");}else{printf("if failed");} }
-#line 1450 "y.tab.c"
+                                     {printf("if +++++++ ");}
+#line 1529 "y.tab.c"
     break;
 
   case 11:
 #line 48 "calc.y"
-                                        {printf("if ++++++- "); if((yyvsp[-2].num)){(yyval.num)=(yyvsp[-1].num);printf("if passed");}else{printf("if failed");}}
-#line 1456 "y.tab.c"
+                                          {printf("if ++++++- "); if((yyvsp[-2].num)){(yyval.num)=(yyvsp[-1].num);printf("if passed");}else{printf("if failed");}}
+#line 1535 "y.tab.c"
     break;
 
   case 12:
 #line 49 "calc.y"
-                                             {printf("if_e_i ++++++- "); if((yyvsp[-4].num)){(yyval.num)=(yyvsp[-3].num);printf("if_e_i passed");}else{(yyval.num)=(yyvsp[-1].num);printf("if_e_e passed");}}
-#line 1462 "y.tab.c"
+                                                 {printf("if_e_i +++++++ "); if((yyvsp[-4].num)){(yyval.num)=(yyvsp[-3].num);printf("if_e_i passed");}else{(yyval.num)=(yyvsp[-1].num);printf("if_e_e passed");}}
+#line 1541 "y.tab.c"
     break;
 
   case 13:
 #line 50 "calc.y"
-                                                  {printf("if_e_i ++++++- "); if((yyvsp[-4].num)){(yyval.num)=(yyvsp[-3].num);printf("if_e_i passed");}else{(yyval.num)=(yyvsp[-1].num);printf("if_e_e passed");}}
-#line 1468 "y.tab.c"
+                                                      {printf("if_e_i ++++++- "); if((yyvsp[-4].num)){(yyval.num)=(yyvsp[-3].num);printf("if_e_i passed");}else{(yyval.num)=(yyvsp[-1].num);printf("if_e_e passed");}}
+#line 1547 "y.tab.c"
     break;
 
   case 14:
 #line 51 "calc.y"
                                                         {printf("Arithmetic ++++++++++++++++++%f\n",(yyvsp[-1].num));}
-#line 1474 "y.tab.c"
+#line 1553 "y.tab.c"
     break;
 
   case 15:
 #line 52 "calc.y"
                                                 {printf("Arithmetic +++++++++++++++++-%f\n",(yyvsp[-1].num));}
-#line 1480 "y.tab.c"
+#line 1559 "y.tab.c"
     break;
 
   case 16:
 #line 53 "calc.y"
                                                 {printf("))%f\n",(yyvsp[-1].num));}
-#line 1486 "y.tab.c"
+#line 1565 "y.tab.c"
     break;
 
   case 17:
 #line 54 "calc.y"
                                                 {return 0;}
-#line 1492 "y.tab.c"
+#line 1571 "y.tab.c"
     break;
 
   case 18:
-#line 93 "calc.y"
-                                 {printf("ASSSSSSIIGGNNMEENNTT");if((top_if && !top_else)){updateSymbolVal((yyvsp[-2].id),(yyvsp[0].num));}}
-#line 1498 "y.tab.c"
+#line 57 "calc.y"
+                                        {;}
+#line 1577 "y.tab.c"
+    break;
+
+  case 19:
+#line 58 "calc.y"
+                                        {printf("curly");}
+#line 1583 "y.tab.c"
     break;
 
   case 20:
-#line 96 "calc.y"
-                               {(yyval.num) = (yyvsp[-2].num) - (yyvsp[0].num);printf("yacc2 %f\n",(yyval.num));}
-#line 1504 "y.tab.c"
+#line 59 "calc.y"
+                                                {printf("curly -");}
+#line 1589 "y.tab.c"
     break;
 
   case 21:
-#line 97 "calc.y"
-                               {(yyval.num) = (yyvsp[-2].num) * (yyvsp[0].num);printf("yacc3 %f\n",(yyval.num));}
-#line 1510 "y.tab.c"
+#line 60 "calc.y"
+                                                {exit(EXIT_SUCCESS);}
+#line 1595 "y.tab.c"
     break;
 
   case 22:
-#line 98 "calc.y"
-                               {(yyval.num) = (yyvsp[-2].num) / (yyvsp[0].num);printf("yacc4 %f\n",(yyval.num));}
-#line 1516 "y.tab.c"
+#line 61 "calc.y"
+                                                {printf("Printing %f\n", (yyvsp[-1].num));}
+#line 1601 "y.tab.c"
     break;
 
   case 23:
-#line 99 "calc.y"
-                                       {(yyval.num) = (yyvsp[-2].num) + (yyvsp[0].num);printf("yacc1 %f\n",(yyval.num));}
-#line 1522 "y.tab.c"
+#line 62 "calc.y"
+                                        {printf("checked\n");}
+#line 1607 "y.tab.c"
     break;
 
   case 24:
-#line 100 "calc.y"
-                                       {(yyval.num) = (yyvsp[-1].num);printf("yacc44 %f\n",(yyval.num));}
-#line 1528 "y.tab.c"
+#line 63 "calc.y"
+                                        {printf("Printing %f\n", (yyvsp[-1].num));}
+#line 1613 "y.tab.c"
     break;
 
   case 25:
-#line 103 "calc.y"
-                                                {(yyval.num) = (yyvsp[0].num);printf("yacc00 %f\n",(yyval.num));top_if = (yyvsp[0].num);top_else = !top_if;printf("Bool %d..%d\n",top_if,top_else);}
-#line 1534 "y.tab.c"
+#line 64 "calc.y"
+                                        {exit(EXIT_SUCCESS);}
+#line 1619 "y.tab.c"
     break;
 
   case 26:
-#line 104 "calc.y"
-                                        {(yyval.num) = (yyvsp[-3].num) && (yyvsp[0].num);top_if = (yyval.num);top_else = !top_if;printf("Bool %d\n",top_if);}
-#line 1540 "y.tab.c"
+#line 65 "calc.y"
+                                     {printf("if +++++++ ");if((yyvsp[-2].num)){(yyval.num)=(yyvsp[-1].num);printf("if passed");}else{printf("if failed");} }
+#line 1625 "y.tab.c"
     break;
 
   case 27:
-#line 105 "calc.y"
-                                        {(yyval.num) = (yyvsp[-3].num) || (yyvsp[0].num);top_if = (yyval.num);top_else = !top_if;printf("Bool %d\n",top_if);}
-#line 1546 "y.tab.c"
+#line 66 "calc.y"
+                                          {printf("if ++++++- "); if((yyvsp[-2].num)){(yyval.num)=(yyvsp[-1].num);printf("if passed");}else{printf("if failed");}}
+#line 1631 "y.tab.c"
     break;
 
   case 28:
-#line 106 "calc.y"
-                                        {(yyval.num) = !(yyvsp[0].num);printf("yacc7 %f\n",(yyval.num));top_if = (yyval.num);top_else = !top_if;}
-#line 1552 "y.tab.c"
+#line 67 "calc.y"
+                                                 {printf("if_e_i ++++++- "); if((yyvsp[-4].num)){(yyval.num)=(yyvsp[-3].num);printf("if_e_i passed");}else{(yyval.num)=(yyvsp[-1].num);printf("if_e_e passed");}}
+#line 1637 "y.tab.c"
     break;
 
   case 29:
-#line 107 "calc.y"
-                                        {(yyval.num) = (yyvsp[-1].num);printf("yacc44 %f\n",(yyval.num));top_if = (yyval.num);top_else = !top_if;}
-#line 1558 "y.tab.c"
+#line 68 "calc.y"
+                                                      {printf("if_e_i ++++++- "); if((yyvsp[-4].num)){(yyval.num)=(yyvsp[-3].num);printf("if_e_i passed");}else{(yyval.num)=(yyvsp[-1].num);printf("if_e_e passed");}}
+#line 1643 "y.tab.c"
     break;
 
   case 30:
-#line 110 "calc.y"
-                                {(yyval.num) = (yyvsp[0].num);}
-#line 1564 "y.tab.c"
+#line 69 "calc.y"
+                                                        {printf("Arithmetic ++++++++++++++++++%f\n",(yyvsp[-1].num));}
+#line 1649 "y.tab.c"
     break;
 
   case 31:
+#line 70 "calc.y"
+                                                {printf("Arithmetic +++++++++++++++++-%f\n",(yyvsp[-1].num));}
+#line 1655 "y.tab.c"
+    break;
+
+  case 32:
+#line 71 "calc.y"
+                                                {printf("))%f\n",(yyvsp[-1].num));}
+#line 1661 "y.tab.c"
+    break;
+
+  case 33:
+#line 72 "calc.y"
+                                                {return 0;}
+#line 1667 "y.tab.c"
+    break;
+
+  case 34:
+#line 75 "calc.y"
+                                        {;}
+#line 1673 "y.tab.c"
+    break;
+
+  case 35:
+#line 76 "calc.y"
+                                        {printf("curly");}
+#line 1679 "y.tab.c"
+    break;
+
+  case 36:
+#line 77 "calc.y"
+                                                {printf("curly -");}
+#line 1685 "y.tab.c"
+    break;
+
+  case 37:
+#line 78 "calc.y"
+                                                {exit(EXIT_SUCCESS);}
+#line 1691 "y.tab.c"
+    break;
+
+  case 38:
+#line 79 "calc.y"
+                                                {printf("Printing %f\n", (yyvsp[-1].num));}
+#line 1697 "y.tab.c"
+    break;
+
+  case 39:
+#line 80 "calc.y"
+                                        {printf("checked\n");}
+#line 1703 "y.tab.c"
+    break;
+
+  case 40:
+#line 81 "calc.y"
+                                        {printf("Printing %f\n", (yyvsp[-1].num));}
+#line 1709 "y.tab.c"
+    break;
+
+  case 41:
+#line 82 "calc.y"
+                                        {exit(EXIT_SUCCESS);}
+#line 1715 "y.tab.c"
+    break;
+
+  case 42:
+#line 83 "calc.y"
+                                     {printf("if +++++++ ");if((yyvsp[-2].num)){(yyval.num)=(yyvsp[-1].num);printf("if passed");}else{printf("if failed");} }
+#line 1721 "y.tab.c"
+    break;
+
+  case 43:
+#line 84 "calc.y"
+                                          {printf("if ++++++- "); if((yyvsp[-2].num)){(yyval.num)=(yyvsp[-1].num);printf("if passed");}else{printf("if failed");}}
+#line 1727 "y.tab.c"
+    break;
+
+  case 44:
+#line 85 "calc.y"
+                                                 {printf("if_e_i ++++++- "); if((yyvsp[-4].num)){(yyval.num)=(yyvsp[-3].num);printf("if_e_i passed");}else{(yyval.num)=(yyvsp[-1].num);printf("if_e_e passed");}}
+#line 1733 "y.tab.c"
+    break;
+
+  case 45:
+#line 86 "calc.y"
+                                                      {printf("if_e_i ++++++- "); if((yyvsp[-4].num)){(yyval.num)=(yyvsp[-3].num);printf("if_e_i passed");}else{(yyval.num)=(yyvsp[-1].num);printf("if_e_e passed");}}
+#line 1739 "y.tab.c"
+    break;
+
+  case 46:
+#line 87 "calc.y"
+                                                        {printf("Arithmetic ++++++++++++++++++%f\n",(yyvsp[-1].num));}
+#line 1745 "y.tab.c"
+    break;
+
+  case 47:
+#line 88 "calc.y"
+                                                {printf("Arithmetic +++++++++++++++++-%f\n",(yyvsp[-1].num));}
+#line 1751 "y.tab.c"
+    break;
+
+  case 48:
+#line 89 "calc.y"
+                                                {printf("))%f\n",(yyvsp[-1].num));}
+#line 1757 "y.tab.c"
+    break;
+
+  case 49:
+#line 90 "calc.y"
+                                                {return 0;}
+#line 1763 "y.tab.c"
+    break;
+
+  case 50:
+#line 93 "calc.y"
+                                 {printf("ASSSSSSIIGGNNMEENNTT");if((top_if && !top_else)){updateSymbolVal((yyvsp[-2].id),(yyvsp[0].num));}}
+#line 1769 "y.tab.c"
+    break;
+
+  case 51:
+#line 96 "calc.y"
+                                   {printf("AAAAAAAAAAAAAAA");if((top_else && !top_if)){updateSymbolVal((yyvsp[-2].id),(yyvsp[0].num));}}
+#line 1775 "y.tab.c"
+    break;
+
+  case 53:
+#line 100 "calc.y"
+                               {(yyval.num) = (yyvsp[-2].num) - (yyvsp[0].num);printf("yacc2 %f\n",(yyval.num));}
+#line 1781 "y.tab.c"
+    break;
+
+  case 54:
+#line 101 "calc.y"
+                               {(yyval.num) = (yyvsp[-2].num) * (yyvsp[0].num);printf("yacc3 %f\n",(yyval.num));}
+#line 1787 "y.tab.c"
+    break;
+
+  case 55:
+#line 102 "calc.y"
+                               {(yyval.num) = (yyvsp[-2].num) / (yyvsp[0].num);printf("yacc4 %f\n",(yyval.num));}
+#line 1793 "y.tab.c"
+    break;
+
+  case 56:
+#line 103 "calc.y"
+                                       {(yyval.num) = (yyvsp[-2].num) + (yyvsp[0].num);printf("yacc1 %f\n",(yyval.num));}
+#line 1799 "y.tab.c"
+    break;
+
+  case 57:
+#line 104 "calc.y"
+                                       {(yyval.num) = (yyvsp[-1].num);printf("yacc44 %f\n",(yyval.num));}
+#line 1805 "y.tab.c"
+    break;
+
+  case 58:
+#line 107 "calc.y"
+                                                {(yyval.num) = (yyvsp[0].num);printf("yacc00 %f\n",(yyval.num));top_if = (yyvsp[0].num);top_else = !top_if;printf("Bool %d..%d\n",top_if,top_else);}
+#line 1811 "y.tab.c"
+    break;
+
+  case 59:
+#line 108 "calc.y"
+                                        {(yyval.num) = (yyvsp[-3].num) && (yyvsp[0].num);top_if = (yyval.num);top_else = !top_if;printf("Bool %d\n",top_if);}
+#line 1817 "y.tab.c"
+    break;
+
+  case 60:
+#line 109 "calc.y"
+                                        {(yyval.num) = (yyvsp[-3].num) || (yyvsp[0].num);top_if = (yyval.num);top_else = !top_if;printf("Bool %d\n",top_if);}
+#line 1823 "y.tab.c"
+    break;
+
+  case 61:
+#line 110 "calc.y"
+                                        {(yyval.num) = !(yyvsp[0].num);printf("yacc7 %f\n",(yyval.num));top_if = (yyval.num);top_else = !top_if;}
+#line 1829 "y.tab.c"
+    break;
+
+  case 62:
 #line 111 "calc.y"
+                                        {(yyval.num) = (yyvsp[-1].num);printf("yacc44 %f\n",(yyval.num));top_if = (yyval.num);top_else = !top_if;}
+#line 1835 "y.tab.c"
+    break;
+
+  case 63:
+#line 114 "calc.y"
+                                {(yyval.num) = (yyvsp[0].num);}
+#line 1841 "y.tab.c"
+    break;
+
+  case 64:
+#line 115 "calc.y"
                                                 {printf("---%s---\n",(yyvsp[0].id)); (yyval.num) = symbolVal((yyvsp[0].id));}
-#line 1570 "y.tab.c"
+#line 1847 "y.tab.c"
     break;
 
 
-#line 1574 "y.tab.c"
+#line 1851 "y.tab.c"
 
       default: break;
     }
@@ -1802,7 +2079,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 114 "calc.y"
+#line 118 "calc.y"
                      /* C code */
 
 /*
