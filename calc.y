@@ -48,8 +48,8 @@ line    : assignment ';'		{;}
 		| line exit_command ';'	{exit(EXIT_SUCCESS);}
 		| IF bool line ';' {printf("if +++++++ ");}//if($2){$$=$3;printf("if passed");}else{printf("if failed");} }
 		| line IF bool line ';' {printf("if ++++++- ");}// if($3){$$=$4;printf("if passed");}else{printf("if failed");}}
-		| IF bool line ELSE line_e ';' {printf("if_e_i +++++++ ");}// if($2){$$=$3;printf("if_e_i passed");}else{$$=$5;printf("if_e_e passed");}}
-		| line IF bool line ELSE line_e ';' {printf("if_e_i ++++++- ");}// if($3){$$=$4;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
+		| IF bool line ELSE line ';' {printf("if_e_i +++++++ ");}// if($2){$$=$3;printf("if_e_i passed");}else{$$=$5;printf("if_e_e passed");}}
+		| line IF bool line ELSE line ';' {printf("if_e_i ++++++- ");}// if($3){$$=$4;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
 		| exp ';'				{printf("Arithmetic ++++++++++++++++++%f\n",$1);}
 		| line exp ';'			{printf("Arithmetic +++++++++++++++++-%f\n",$2);}
 		| number ';'			{printf("))%f\n",$1);}
@@ -74,29 +74,29 @@ line    : assignment ';'		{;}
 //         | ';'					{return 0;}
 // 		;
 
-line_e    : assignment_e ';'		{;}
-		| '{' line_e '}' 		{printf("curly");}
-		| line_e '{' line_e '}' 		{printf("curly -");}
-		| exit_command ';'		{exit(EXIT_SUCCESS);}
-		| print exp ';'			{printf("Printing %f\n", $2);}
-		| line_e assignment_e ';'	{printf("checked\n");}
-		| line_e print exp ';'	{printf("Printing %f\n", $3);}
-		| line_e exit_command ';'	{exit(EXIT_SUCCESS);}
-		| IF bool line ';' {printf("if +++++++ ");if($2){$$=$3;printf("if passed");}else{printf("if failed");} }
-		| line_e IF bool line ';' {printf("if ++++++- "); if($3){$$=$4;printf("if passed");}else{printf("if failed");}}
-		| IF bool line ELSE line_e ';' {printf("if_e_i ++++++- "); if($2){$$=$3;printf("if_e_i passed");}else{$$=$5;printf("if_e_e passed");}}
-		| line_e IF bool line ELSE line_e ';' {printf("if_e_i ++++++- "); if($3){$$=$4;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
-		| exp ';'				{printf("Arithmetic ++++++++++++++++++%f\n",$1);}
-		| line_e exp ';'			{printf("Arithmetic +++++++++++++++++-%f\n",$2);}
-		| number ';'			{printf("))%f\n",$1);}
-        | ';'					{return 0;}
-		;
+// line_e    : assignment_e ';'		{;}
+// 		| '{' line_e '}' 		{printf("curly");}
+// 		| line_e '{' line_e '}' 		{printf("curly -");}
+// 		| exit_command ';'		{exit(EXIT_SUCCESS);}
+// 		| print exp ';'			{printf("Printing %f\n", $2);}
+// 		| line_e assignment_e ';'	{printf("checked\n");}
+// 		| line_e print exp ';'	{printf("Printing %f\n", $3);}
+// 		| line_e exit_command ';'	{exit(EXIT_SUCCESS);}
+// 		| IF bool line ';' {printf("if +++++++ ");if($2){$$=$3;printf("if passed");}else{printf("if failed");} }
+// 		| line_e IF bool line ';' {printf("if ++++++- "); if($3){$$=$4;printf("if passed");}else{printf("if failed");}}
+// 		| IF bool line ELSE line_e ';' {printf("if_e_i ++++++- "); if($2){$$=$3;printf("if_e_i passed");}else{$$=$5;printf("if_e_e passed");}}
+// 		| line_e IF bool line ELSE line_e ';' {printf("if_e_i ++++++- "); if($3){$$=$4;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
+// 		| exp ';'				{printf("Arithmetic ++++++++++++++++++%f\n",$1);}
+// 		| line_e exp ';'			{printf("Arithmetic +++++++++++++++++-%f\n",$2);}
+// 		| number ';'			{printf("))%f\n",$1);}
+//         | ';'					{return 0;}
+// 		;
 
 assignment : identifier '=' exp  {printf("ASSSSSSIIGGNNMEENNTT");if((top_if && !top_else)){updateSymbolVal($1,$3);}}
 			;
 
-assignment_e : identifier '=' exp  {printf("AAAAAAAAAAAAAAA");if((top_else && !top_if)){updateSymbolVal($1,$3);}}
-			;
+// assignment_e : identifier '=' exp  {printf("AAAAAAAAAAAAAAA");if((top_else && !top_if)){updateSymbolVal($1,$3);}}
+// 			;
 
 exp    	: term                 
        	| exp '-' exp          {$$ = $1 - $3;printf("yacc2 %f\n",$$);}//top_if = $$;top_else = !top_if;}
