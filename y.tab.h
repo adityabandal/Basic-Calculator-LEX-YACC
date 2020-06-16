@@ -66,7 +66,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 21 "calc.y" /* yacc.c:1909  */
+#line 27 "calc.y" /* yacc.c:1909  */
 float num; char *id;
 
 #line 73 "y.tab.h" /* yacc.c:1909  */

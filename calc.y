@@ -6,11 +6,17 @@ int yylex();
 #include <ctype.h>
 #include <string.h>
 #define SIZE 10
+#define STACK_SIZE 10
 typedef struct symbols_tag{
 	char *name;
 	float val;
 }symbol;
 int size = 0;
+int stack[STACK_SIZE];
+int stack_size=0;
+int top();
+void push(int x);
+void pop();
 symbol symbols[SIZE];
 float symbolVal(char* symbol);
 void updateSymbolVal(char* symbol, float val);
@@ -28,7 +34,7 @@ int top_if = 1,top_else = 0;
 %token exit_command
 %token <num> number
 %token <id> identifier
-%type <num> line exp term bool line_e assignment_e
+%type <num> line exp term bool line_e assignment_e if_codn else_codn
 %type <id> assignment
 %left '+' '-'
 %left '*' '/' '%'
@@ -46,16 +52,21 @@ line    : assignment ';'		{;}
 		| line assignment ';'	{printf("checked\n");}
 		| line print exp ';'	{printf("Printing %f\n", $3);}
 		| line exit_command ';'	{exit(EXIT_SUCCESS);}
-		| IF bool line ';' {printf("if +++++++ ");}//if($2){$$=$3;printf("if passed");}else{printf("if failed");} }
-		| line IF bool line ';' {printf("if ++++++- ");}// if($3){$$=$4;printf("if passed");}else{printf("if failed");}}
-		| IF bool line ELSE line_e ';' {printf("if_e_i +++++++ ");}// if($2){$$=$3;printf("if_e_i passed");}else{$$=$5;printf("if_e_e passed");}}
-		| line IF bool line ELSE line_e ';' {printf("if_e_i ++++++- ");}// if($3){$$=$4;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
+		| if_codn 			{$$=$1;printf("if condition\n");}
+		| line if_codn 		{$$=$2;printf("if condition after line\n");}
+		// | IF bool line ';' {printf("if +++++++ ");}//if($2){$$=$3;printf("if passed");}else{printf("if failed");} }
+		// | line IF bool line ';' {printf("if ++++++- ");}// if($3){$$=$4;printf("if passed");}else{printf("if failed");}}
+		// | IF bool line else_codn ';' {printf("if_e_i +++++++ ");}// if($2){$$=$3;printf("if_e_i passed");}else{$$=$5;printf("if_e_e passed");}}
+		// | line IF bool line else_codn ';' {printf("if_e_i ++++++- ");}// if($3){$$=$4;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
 		| exp ';'				{printf("Arithmetic ++++++++++++++++++%f\n",$1);}
 		| line exp ';'			{printf("Arithmetic +++++++++++++++++-%f\n",$2);}
 		| number ';'			{printf("))%f\n",$1);}
         | ';'					{return 0;}
 		;
-
+ 
+if_codn : IF bool {top()==1 ? push($2!=0) : push(0);} line {pop();}
+		| IF bool {top()==1 ? push($2!=0) : push(0);} line {pop();} ELSE {top()==1 ? push($2==0) : push(0);} line {pop();}
+		;
 // line_i    : assignment ';'		{;}
 // 		| '{' line '}' 		{printf("curly");}
 // 		| line '{' line '}' 		{printf("curly -");}
@@ -74,29 +85,29 @@ line    : assignment ';'		{;}
 //         | ';'					{return 0;}
 // 		;
 
-line_e    : assignment_e ';'		{;}
-		| '{' line_e '}' 		{printf("curly");}
-		| line_e '{' line_e '}' 		{printf("curly -");}
-		| exit_command ';'		{exit(EXIT_SUCCESS);}
-		| print exp ';'			{printf("Printing %f\n", $2);}
-		| line_e assignment_e ';'	{printf("checked\n");}
-		| line_e print exp ';'	{printf("Printing %f\n", $3);}
-		| line_e exit_command ';'	{exit(EXIT_SUCCESS);}
-		| IF bool line ';' {printf("if +++++++ ");if($2){$$=$3;printf("if passed");}else{printf("if failed");} }
-		| line_e IF bool line ';' {printf("if ++++++- "); if($3){$$=$4;printf("if passed");}else{printf("if failed");}}
-		| IF bool line ELSE line_e ';' {printf("if_e_i ++++++- "); if($2){$$=$3;printf("if_e_i passed");}else{$$=$5;printf("if_e_e passed");}}
-		| line_e IF bool line ELSE line_e ';' {printf("if_e_i ++++++- "); if($3){$$=$4;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
-		| exp ';'				{printf("Arithmetic ++++++++++++++++++%f\n",$1);}
-		| line_e exp ';'			{printf("Arithmetic +++++++++++++++++-%f\n",$2);}
-		| number ';'			{printf("))%f\n",$1);}
-        | ';'					{return 0;}
-		;
+// line_e    : assignment_e ';'		{;}
+// 		| '{' line_e '}' 		{printf("curly");}
+// 		| line_e '{' line_e '}' 		{printf("curly -");}
+// 		| exit_command ';'		{exit(EXIT_SUCCESS);}
+// 		| print exp ';'			{printf("Printing %f\n", $2);}
+// 		| line_e assignment_e ';'	{printf("checked\n");}
+// 		| line_e print exp ';'	{printf("Printing %f\n", $3);}
+// 		| line_e exit_command ';'	{exit(EXIT_SUCCESS);}
+// 		| IF bool line ';' {printf("if +++++++ ");if($2){$$=$3;printf("if passed");}else{printf("if failed");} }
+// 		| line_e IF bool line ';' {printf("if ++++++- "); if($3){$$=$4;printf("if passed");}else{printf("if failed");}}
+// 		| IF bool line ELSE line_e ';' {printf("if_e_i ++++++- "); if($2){$$=$3;printf("if_e_i passed");}else{$$=$5;printf("if_e_e passed");}}
+// 		| line_e IF bool line ELSE line_e ';' {printf("if_e_i ++++++- "); if($3){$$=$4;printf("if_e_i passed");}else{$$=$6;printf("if_e_e passed");}}
+// 		| exp ';'				{printf("Arithmetic ++++++++++++++++++%f\n",$1);}
+// 		| line_e exp ';'			{printf("Arithmetic +++++++++++++++++-%f\n",$2);}
+// 		| number ';'			{printf("))%f\n",$1);}
+//         | ';'					{return 0;}
+// 		;
 
 assignment : identifier '=' exp  {printf("ASSSSSSIIGGNNMEENNTT");if((top_if && !top_else)){updateSymbolVal($1,$3);}}
 			;
 
-assignment_e : identifier '=' exp  {printf("AAAAAAAAAAAAAAA");if((top_else && !top_if)){updateSymbolVal($1,$3);}}
-			;
+// assignment_e : identifier '=' exp  {printf("AAAAAAAAAAAAAAA");if((top_else && !top_if)){updateSymbolVal($1,$3);}}
+// 			;
 
 exp    	: term                 
        	| exp '-' exp          {$$ = $1 - $3;printf("yacc2 %f\n",$$);}//top_if = $$;top_else = !top_if;}
@@ -165,9 +176,31 @@ void updateSymbolVal(char* symbol, float val)
 		size++;
 	}
 }
-
+int top(){
+	return stack[stack_size];
+}
+void push(int x){
+	if(stack_size<STACK_SIZE-1){
+		stack_size++;
+		stack[stack_size] = x;
+	}
+	else{
+		printf("\nstack full\n");
+		exit(EXIT_SUCCESS);
+	}
+}
+void pop(){
+	if(stack_size==0){
+		printf("\nstack empty\n");
+		exit(EXIT_SUCCESS);
+	}
+	else{
+		stack_size--;
+	}
+}
 int main (void) {
 	/* init symbol table */
+	stack[0]=1;
 	int i;
 	for(i=0; i<SIZE; i++) {
 		symbols[i].name = NULL;
